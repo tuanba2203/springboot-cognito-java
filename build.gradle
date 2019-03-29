@@ -1,0 +1,65 @@
+buildscript {
+	ext {
+		springBootVersion = '2.0.3.RELEASE'
+	}
+	repositories {
+		mavenCentral()
+	}
+	dependencies {
+		classpath("org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}")
+	}
+}
+
+plugins {
+    id 'java'
+    id 'application'
+    id 'org.springframework.boot' version '2.0.3.RELEASE'
+    id "io.spring.dependency-management" version "1.0.5.RELEASE"
+}
+
+apply plugin: 'java'
+apply plugin: 'eclipse'
+apply plugin: 'org.springframework.boot'
+apply plugin: 'io.spring.dependency-management'
+
+compileJava {
+    options.compilerArgs << "-Xlint:unchecked"
+}
+
+group = 'com.example'
+version = '0.0.1-SNAPSHOT'
+sourceCompatibility = 1.8
+
+compileJava {
+    options.compilerArgs << "-Xlint:unchecked"
+}
+
+jar {
+	enabled = true
+	baseName = 'cognoto-demo'
+	version = '0.0.1-SNAPSHOT'
+	mainClassName = 'com.example.demo.DemoApplication'
+	manifest {
+		attributes 'Implementation-Title': baseName,
+				'Implementation-Version': version,
+				provider: 'gradle'
+	}
+}
+
+tasks.withType(JavaCompile) {
+    //enable compilation in a separate daemon process
+    options.fork = true
+}
+
+repositories {
+    mavenLocal()
+    mavenCentral()
+}
+
+
+dependencies {
+	compile('org.springframework.boot:spring-boot-starter-web')
+    compile('org.springframework.boot:spring-boot-starter-security')
+	compile('com.fasterxml.jackson.module:jackson-module-kotlin')
+	compile('com.nimbusds:nimbus-jose-jwt:5.12')
+}

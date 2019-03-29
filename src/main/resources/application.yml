@@ -1,0 +1,28 @@
+urls:
+  # cognito root auth url from "App integration/Domain name"
+  # Can be used AWS cognito domain or your custom domain
+  # Sample: https://[your_custom_prefix].auth.[awsregion].amazoncognito.com
+  cognito:    https://.....
+
+aws:
+  # The AWS region that you setup the cognito user pool
+  current_region: XXXXXXXXXXX
+
+cognito:
+  # user pool id from "General settings" page
+  user_pool_id: XXXXXXXXXXXX
+  # cognito client id from "App clients" page
+  client:     XXXXXXXXXXXXXXXXXXXXX
+  # cognito client secret. Note: Cognito client app must be enable "Generate client secret" option
+  secret:     XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXx
+  # valid callback url set in cognito
+  # More detail: https://docs.aws.amazon.com/cognito/latest/developerguide/cognito-user-pools-app-settings.html
+  callback:   https://XXXXXXXXXXXXXXXXXXXXX
+  # url for cognito jwt keys: https://cognito-idp.{region}.amazonaws.com/{userPoolId}/.well-known/jwks.json
+  # More detail: https://docs.aws.amazon.com/cognito/latest/developerguide/amazon-cognito-user-pools-using-tokens-verifying-a-jwt.html
+  keys:       https://cognito-idp.${aws.current_region}.amazonaws.com/${cognito.user_pool_id}/.well-known/jwks.json
+
+
+endpoints:
+  authorize: ${urls.cognito}/oauth2/authorize?response_type=code&client_id=${cognito.client}&redirect_uri=${cognito.callback}
+  token: ${urls.cognito}/oauth2/token
